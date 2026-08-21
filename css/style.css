@@ -1,0 +1,359 @@
+/* ============ ETF 产品线透视 · 样式 ============ */
+:root {
+  --bg: #f4f6fa;
+  --panel: #ffffff;
+  --border: #e5e9f0;
+  --text: #1f2a3d;
+  --text-2: #5c6b84;
+  --text-3: #93a1b8;
+  --brand: #1e3a5f;
+  --blue: #2563eb;
+  --hover: #f0f4ff;
+  --radius: 12px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body { height: 100%; }
+
+body {
+  font-family: "PingFang SC", "Microsoft YaHei", "Segoe UI", -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 14px;
+}
+
+.layout { display: flex; min-height: 100vh; }
+
+/* ---------- 侧边栏 ---------- */
+.sidebar {
+  width: 240px;
+  flex-shrink: 0;
+  background: var(--brand);
+  color: #e7edf7;
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 20px 18px;
+  border-bottom: 1px solid rgba(255,255,255,.12);
+}
+
+.brand-logo {
+  width: 42px; height: 42px;
+  border-radius: 10px;
+  background: #fff;
+  color: var(--brand);
+  font-weight: 700;
+  font-size: 14px;
+  display: flex; align-items: center; justify-content: center;
+  letter-spacing: 0;
+}
+
+.brand-text h1 { font-size: 15px; font-weight: 600; color: #fff; }
+.brand-text p { font-size: 11px; color: #9db2d1; margin-top: 2px; }
+
+.nav { flex: 1; padding: 14px 10px; overflow-y: auto; }
+.nav-label { font-size: 11px; color: #8fa6c8; padding: 6px 10px; letter-spacing: 1px; }
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 10px 12px;
+  margin: 2px 0;
+  border-radius: 8px;
+  color: #dbe5f3;
+  text-decoration: none;
+  font-size: 13.5px;
+  transition: background .15s;
+  cursor: pointer;
+}
+
+.nav-item:hover { background: rgba(255,255,255,.08); }
+.nav-item.active { background: rgba(255,255,255,.16); color: #fff; font-weight: 500; }
+
+.nav-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+.sidebar-foot { padding: 14px 18px; border-top: 1px solid rgba(255,255,255,.12); }
+.sidebar-foot p { font-size: 11px; color: #8fa6c8; line-height: 1.7; }
+
+/* ---------- 内容区 ---------- */
+.content { flex: 1; padding: 24px 28px; min-width: 0; }
+
+.page.hidden { display: none; }
+
+.page-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 20px; flex-wrap: wrap; margin-bottom: 18px; }
+
+.page-head h2 { font-size: 22px; font-weight: 600; }
+.page-head .sub { color: var(--text-2); margin-top: 4px; font-size: 13px; }
+
+/* 统计卡 */
+.stat-cards { display: flex; gap: 12px; flex-wrap: wrap; }
+
+.stat-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px 18px;
+  min-width: 118px;
+}
+
+.stat-card .k { font-size: 12px; color: var(--text-2); }
+.stat-card .v { font-size: 20px; font-weight: 600; margin-top: 4px; }
+.stat-card .v small { font-size: 12px; font-weight: 400; color: var(--text-3); }
+
+/* 分栏：左列表 + 右图表列（右列内两个饼图上下排列） */
+.split {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 400px;
+  grid-template-areas: "table charts";
+  gap: 16px;
+  align-items: start;
+}
+
+.table-panel { grid-area: table; min-height: 0; }
+.chart-col {
+  grid-area: charts;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-height: 0;
+}
+
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.panel-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+}
+
+.panel-head h3 { font-size: 15px; font-weight: 600; }
+.panel-head .hint { font-size: 12px; color: var(--text-3); }
+
+/* 分段切换 */
+.seg { display: flex; background: #eef1f6; border-radius: 8px; padding: 3px; }
+.seg-btn {
+  border: none; background: transparent;
+  font-size: 12px; color: var(--text-2);
+  padding: 4px 12px; border-radius: 6px;
+  cursor: pointer; font-family: inherit;
+}
+.seg-btn.active { background: #fff; color: var(--blue); font-weight: 500; box-shadow: 0 1px 3px rgba(0,0,0,.08); }
+
+/* ---------- 筛选器 ---------- */
+.filters { padding: 10px 16px 12px; border-bottom: 1px solid var(--border); background: #fbfcfe; }
+.filter-row { display: flex; align-items: center; gap: 10px; margin-top: 6px; }
+.filter-row:first-child { margin-top: 0; }
+.filter-label { font-size: 12px; color: var(--text-2); width: 60px; flex-shrink: 0; }
+.filter-btns { display: flex; gap: 6px; flex-wrap: wrap; }
+.f-btn {
+  border: 1px solid var(--border);
+  background: #fff;
+  color: var(--text-2);
+  font-size: 12px;
+  padding: 3px 12px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all .15s;
+}
+.f-btn:hover { border-color: var(--blue); color: var(--blue); }
+.f-btn.active { background: var(--blue); border-color: var(--blue); color: #fff; font-weight: 500; }
+
+.count-badge {
+  display: inline-block;
+  background: #eef1f6;
+  color: var(--text-2);
+  font-size: 12px;
+  font-weight: 400;
+  border-radius: 20px;
+  padding: 1px 10px;
+  margin-left: 8px;
+  vertical-align: 1px;
+}
+
+/* ---------- 表格 ---------- */
+.table-panel { min-height: 0; }
+
+.table-wrap { overflow: auto; max-height: calc(100vh - 210px); }
+
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+
+thead th {
+  position: sticky; top: 0;
+  background: #f8fafd;
+  color: var(--text-2);
+  font-weight: 500;
+  text-align: left;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+}
+
+thead th.num, tbody td.num { text-align: right; }
+
+thead th:hover { color: var(--blue); }
+thead th.sorted { color: var(--blue); }
+thead th .arrow { font-size: 10px; margin-left: 2px; }
+
+tbody td {
+  padding: 9px 12px;
+  border-bottom: 1px solid #f0f2f7;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 220px;
+}
+
+tbody tr:hover { background: var(--hover); }
+tbody tr:last-child td { border-bottom: none; }
+
+td.code { font-family: "SF Mono", Consolas, monospace; color: var(--text-2); }
+td.scale { font-weight: 500; }
+td.idx { color: var(--text-3); font-size: 12px; text-align: center; }
+th.idx { width: 48px; text-align: center; }
+
+.data-badge {
+  display: inline-block;
+  background: #e8f0fe;
+  color: #1d4ed8;
+  border-radius: 6px;
+  padding: 2px 10px;
+  font-size: 12px;
+  font-weight: 400;
+}
+.data-badge b { font-weight: 600; }
+
+.tag {
+  display: inline-block;
+  padding: 2px 9px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.tag-cat1-股票 { background: #e8f0fe; color: #1d4ed8; }
+.tag-cat1-商品 { background: #fff1e6; color: #c2410c; }
+.tag-cat1-债券 { background: #e0f5f7; color: #0e7490; }
+.tag-cat1-货币 { background: #e7f6ec; color: #15803d; }
+.tag-cat1-其他 { background: #f1f1f1; color: #6b7280; }
+
+.tag-cat2-宽基 { background: #e8f0fe; color: #1d4ed8; }
+.tag-cat2-行业 { background: #f3e8ff; color: #7e22ce; }
+.tag-cat2-主题 { background: #fff1e6; color: #c2410c; }
+.tag-cat2-风格因子 { background: #e0f5f7; color: #0e7490; }
+
+/* ---------- 图表 ---------- */
+.chart-panel { min-height: 0; }
+.chart { height: 300px; padding: 8px 6px 4px; }
+
+/* ---------- 占位页 ---------- */
+.placeholder {
+  background: var(--panel);
+  border: 1px dashed #c9d3e2;
+  border-radius: var(--radius);
+  padding: 80px 40px;
+  text-align: center;
+}
+.placeholder h2 { font-size: 20px; margin-bottom: 10px; }
+.placeholder p { color: var(--text-2); }
+
+@media (max-width: 1200px) {
+  .split { grid-template-columns: 1fr; grid-template-areas: "table" "charts"; }
+  .table-wrap { max-height: 480px; }
+  .chart { height: 280px; }
+}
+
+/* ---------- 对比分析页 ---------- */
+.cmp-section { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; align-items: start; }
+.cmp-section > .panel:only-child { grid-column: 1 / -1; }
+.chart-lg { height: 360px; padding: 8px 10px 4px; }
+.cmp-table-wrap { max-height: 520px; }
+.cmp-table-wrap table { min-width: 900px; }
+.cmp-table-wrap th, .cmp-table-wrap td { padding: 8px 10px; font-size: 12.5px; }
+
+.sub2 { font-size: 11px; color: var(--text-3); margin-top: 3px; }
+
+.lead-grid, .cmp-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; padding: 14px; }
+.lead-card { border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; background: #fbfcfe; }
+.lead-title { font-size: 13px; font-weight: 600; margin-bottom: 8px; color: var(--text); }
+.lead-row { display: flex; justify-content: space-between; align-items: baseline; font-size: 12px; margin-top: 5px; }
+.lead-k { color: var(--text-3); }
+.lead-v { font-weight: 500; color: var(--text); }
+.lead-v.ok { color: #15803d; }
+.lead-v.no { color: #b45309; }
+.lead-bar { height: 5px; background: #eef1f6; border-radius: 3px; margin-top: 8px; overflow: hidden; }
+.lead-bar-in { height: 100%; background: var(--blue); border-radius: 3px; }
+
+@media (max-width: 1100px) {
+  .cmp-section { grid-template-columns: 1fr; }
+}
+
+/* ---------- 细分赛道对比表 ---------- */
+.track-table { width: 100%; min-width: 1120px; border-collapse: collapse; font-size: 12.5px; }
+.track-table th { background: #f8fafd; color: var(--text-2); font-weight: 500; padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--border); position: sticky; top: 0; white-space: nowrap; }
+.track-table th:nth-child(2), .track-table td.ef { background: #f0f5ff; }
+.track-table td { padding: 10px 12px; border-bottom: 1px solid #f0f2f7; vertical-align: top; white-space: normal; word-break: break-word; }
+.track-table tr:hover td { background: #fafbff; }
+.track-name { font-weight: 600; color: var(--text); width: 150px; white-space: nowrap; }
+.track-cell { min-width: 130px; line-height: 1.5; }
+.track-cell.ef { background: #f0f5ff; }
+.track-top { display: block; margin-top: 4px; color: var(--text-3); font-size: 11px; }
+.track-tip { color: var(--text-2); min-width: 340px; max-width: 440px; line-height: 1.7; font-size: 12px; }
+
+/* ---------- 市场竞争格局页 ---------- */
+.market-tabs { display: flex; gap: 6px; flex-wrap: wrap; align-self: flex-start; margin-top: 4px; }
+.market-tab {
+  border: 1px solid var(--border);
+  background: #fff;
+  color: var(--text-2);
+  font-size: 13px;
+  padding: 6px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all .15s;
+}
+.market-tab:hover { border-color: #185f8a; color: #185f8a; }
+.market-tab.active { background: #185f8a; border-color: #185f8a; color: #fff; font-weight: 500; }
+
+.market-body { margin-top: 14px; }
+.mgr-table { width: 100%; min-width: 760px; border-collapse: collapse; font-size: 12.5px; }
+.mgr-table th { background: #f8fafd; color: var(--text-2); font-weight: 500; padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--border); position: sticky; top: 0; white-space: nowrap; }
+.mgr-table th.num, .mgr-table td.num { text-align: right; }
+.mgr-table td { padding: 10px 12px; border-bottom: 1px solid #f0f2f7; vertical-align: middle; }
+.mgr-table tr:hover td { background: #fafbff; }
+.mgr-table tr.highlight td { background: #f0f5ff; }
+.mgr-table .rank { width: 50px; font-weight: 500; color: var(--text-2); }
+.mgr-table .crown { color: #d97706; margin-left: 3px; }
+.mgr-bar { width: 220px; height: 6px; background: #eef1f6; border-radius: 3px; overflow: hidden; }
+.mgr-bar-in { height: 100%; background: linear-gradient(90deg, #2563eb, #3b82f6); border-radius: 3px; }
+.mgr-top { margin-top: 4px; font-size: 11.5px; color: var(--text); }
+.mgr-sub { color: var(--text-3); font-size: 11px; }
+
+.market-analysis { padding: 18px 20px; line-height: 1.85; font-size: 13px; }
+.market-analysis h4 { margin: 18px 0 10px; font-size: 14px; font-weight: 600; color: var(--text); border-left: 3px solid #185f8a; padding-left: 8px; }
+.market-analysis p { margin-top: 8px; color: var(--text-2); }
+.market-analysis p.lead { font-size: 13.5px; }
+.market-analysis p.lead b { color: var(--text); font-weight: 600; }
+.market-analysis ul { margin: 8px 0 0 20px; color: var(--text-2); }
+.market-analysis li { margin-top: 5px; }
+.market-analysis li b { color: var(--text); font-weight: 600; margin-right: 4px; }

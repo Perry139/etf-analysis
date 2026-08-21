@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ETF 产品线透视 · 头部管理人 ETF 产品结构分析</title>
+<link rel="stylesheet" href="css/style.css">
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-logo">ETF</div>
+      <div class="brand-text">
+        <h1>ETF 产品线透视</h1>
+        <p>头部管理人产品结构分析</p>
+      </div>
+    </div>
+    <nav class="nav">
+      <div class="nav-label">管理人产品线</div>
+      <a class="nav-item active" data-page="efunds" href="#efunds">
+        <span class="nav-dot" style="background:#2563eb"></span>易方达基金
+      </a>
+      <a class="nav-item" data-page="chinaamc" href="#chinaamc">
+        <span class="nav-dot" style="background:#7c3aed"></span>华夏基金
+      </a>
+      <a class="nav-item" data-page="guotai" href="#guotai">
+        <span class="nav-dot" style="background:#0891b2"></span>国泰基金
+      </a>
+      <a class="nav-item" data-page="huatai" href="#huatai">
+        <span class="nav-dot" style="background:#ea580c"></span>华泰柏瑞基金
+      </a>
+      <a class="nav-item" data-page="market" href="#market">
+        <span class="nav-dot" style="background:#185f8a"></span>市场竞争格局
+      </a>
+      <a class="nav-item" data-page="compare" href="#compare">
+        <span class="nav-dot" style="background:#0f766e"></span>头部管理人对比
+      </a>
+    </nav>
+    <div class="sidebar-foot">
+      <p>数据来源：易方达指数直通车</p>
+      <p>数据截至：<span id="dataDate"></span>（前一日收盘）</p>
+    </div>
+  </aside>
+
+  <main class="content">
+
+    <!-- ============ 管理人产品线透视模板 ============ -->
+    <section class="page" id="page-efunds">
+      <header class="page-head">
+        <div>
+          <h2>易方达 ETF 产品线透视</h2>
+          <p class="sub">易方达基金管理有限公司 · 场内 ETF 产品结构总览</p>
+        </div>
+        <div class="stat-cards" id="statCards-efunds"></div>
+      </header>
+      <div class="split">
+        <div class="panel table-panel">
+          <div class="panel-head">
+            <h3>产品列表 <span class="count-badge" id="rowCount-efunds"></span></h3>
+            <span class="hint">点击表头排序</span>
+          </div>
+          <div class="filters">
+            <div class="filter-row">
+              <span class="filter-label">一级分类</span>
+              <div class="filter-btns" id="filterCat1-efunds">
+                <button class="f-btn active" data-v="all">全部</button>
+                <button class="f-btn" data-v="股票">股票</button>
+                <button class="f-btn" data-v="商品">商品</button>
+                <button class="f-btn" data-v="债券">债券</button>
+                <button class="f-btn" data-v="货币">货币</button>
+              </div>
+            </div>
+            <div class="filter-row">
+              <span class="filter-label">二级分类</span>
+              <div class="filter-btns" id="filterCat2-efunds">
+                <button class="f-btn active" data-v="all">全部</button>
+                <button class="f-btn" data-v="宽基">宽基</button>
+                <button class="f-btn" data-v="行业">行业</button>
+                <button class="f-btn" data-v="主题">主题</button>
+                <button class="f-btn" data-v="风格因子">风格因子</button>
+              </div>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table id="etfTable-efunds">
+              <thead>
+                <tr>
+                  <th class="idx">序号</th>
+                  <th data-key="code">证券代码</th>
+                  <th data-key="name">ETF 名称</th>
+                  <th data-key="cat1">一级分类</th>
+                  <th data-key="cat2">二级分类</th>
+                  <th data-key="mgtFee" class="num">管理费率</th>
+                  <th data-key="trstFee" class="num">托管费率</th>
+                  <th data-key="indexName">跟踪指数</th>
+                  <th data-key="scaleYi" class="num">基金规模</th>
+                  <th data-key="lstDt">上市日期</th>
+                </tr>
+              </thead>
+              <tbody id="etfTbody-efunds"></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="chart-col">
+          <div class="panel chart-panel">
+            <div class="panel-head">
+              <h3>一级分类 · 产品结构</h3>
+              <div class="seg" id="segCat1-efunds">
+                <button class="seg-btn active" data-mode="scale">按规模</button>
+                <button class="seg-btn" data-mode="count">按数量</button>
+              </div>
+            </div>
+            <div class="chart" id="pieCat1-efunds"></div>
+          </div>
+          <div class="panel chart-panel">
+            <div class="panel-head">
+              <h3>权益类二级分类 · 产品结构</h3>
+              <div class="seg" id="segCat2-efunds">
+                <button class="seg-btn active" data-mode="scale">按规模</button>
+                <button class="seg-btn" data-mode="count">按数量</button>
+              </div>
+            </div>
+            <div class="chart" id="pieCat2-efunds"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="page hidden" id="page-chinaamc">
+      <header class="page-head">
+        <div>
+          <h2>华夏 ETF 产品线透视</h2>
+          <p class="sub">华夏基金管理有限公司 · 场内 ETF 产品结构总览</p>
+        </div>
+        <div class="stat-cards" id="statCards-chinaamc"></div>
+      </header>
+      <div class="split">
+        <div class="panel table-panel">
+          <div class="panel-head">
+            <h3>产品列表 <span class="count-badge" id="rowCount-chinaamc"></span></h3>
+            <span class="hint">点击表头排序</span>
+          </div>
+          <div class="filters">
+            <div class="filter-row">
+              <span class="filter-label">一级分类</span>
+              <div class="filter-btns" id="filterCat1-chinaamc">
+                <button class="f-btn active" data-v="all">全部</button>
+                <button class="f-btn" data-v="股票">股票</button>
+                <button class="f-btn" data-v="商品">商品</button>
+                <button class="f-btn" data-v="债券">债券</button>
+                <button class="f-btn" data-v="货币">货币</button>
+              </div>
+            </div>
+            <div class="filter-row">
+              <span class="filter-label">二级分类</span>
+              <div class="filter-btns" id="filterCat2-chinaamc">
+                <button class="f-btn active" data-v="all">全部</button>
+                <button class="f-btn" data-v="宽基">宽基</button>
+                <button class="f-btn" data-v="行业">行业</button>
+                <button class="f-btn" data-v="主题">主题</button>
+                <button class="f-btn" data-v="风格因子">风格因子</button>
+              </div>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table id="etfTable-chinaamc">
+              <thead>
+                <tr>
+                  <th class="idx">序号</th>
+                  <th data-key="code">证券代码</th>
+                  <th data-key="name">ETF 名称</th>
+                  <th data-key="cat1">一级分类</th>
+                  <th data-key="cat2">二级分类</th>
+                  <th data-key="mgtFee" class="num">管理费率</th>
+                  <th data-key="trstFee" class="num">托管费率</th>
+                  <th data-key="indexName">跟踪指数</th>
+                  <th data-key="scaleYi" class="num">基金规模</th>
+                  <th data-key="lstDt">上市日期</th>
+                </tr>
+              </thead>
+              <tbody id="etfTbody-chinaamc"></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="chart-col">
+          <div class="panel chart-panel">
+            <div class="panel-head">
+              <h3>一级分类 · 产品结构</h3>
+              <div class="seg" id="segCat1-chinaamc">
+                <button class="seg-btn active" data-mode="scale">按规模</button>
+                <button class="seg-btn" data-mode="count">按数量</button>
+              </div>
+            </div>
+            <div class="chart" id="pieCat1-chinaamc"></div>
+          </div>
+          <div class="panel chart-panel">
+            <div class="panel-head">
+              <h3>权益类二级分类 · 产品结构</h3>
+              <div class="seg" id="segCat2-chinaamc">
+                <button class="seg-btn active" data-mode="scale">按规模</button>
+                <button class="seg-btn" data-mode="count">按数量</button>
+              </div>
+            </div>
+            <div class="chart" id="pieCat2-chinaamc"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="page hidden" id="page-guotai">
+      <header class="page-head">
+        <div>
+          <h2>国泰 ETF 产品线透视</h2>
+          <p class="sub">国泰基金管理有限公司 · 场内 ETF 产品结构总览</p>
+        </div>
+        <div class="stat-cards" id="statCards-guotai"></div>
+      </header>
+      <div class="split">
+        <div class="panel table-panel">
+          <div class="panel-head">
+            <h3>产品列表 <span class="count-badge" id="rowCount-guotai"></span></h3>
+            <span class="hint">点击表头排序</span>
+          </div>
+          <div class="filters">
+            <div class="filter-row">
+              <span class="filter-label">一级分类</span>
+              <div class="filter-btns" id="filterCat1-guotai">
+                <button class="f-btn active" data-v="all">全部</button>
+                <button class="f-btn" data-v="股票">股票</button>
+                <button class="f-btn" data-v="商品">商品</button>
+                <button class="f-btn" data-v="债券">债券</button>
+                <button class="f-btn" data-v="货币">货币</button>
+              </div>
+            </div>
+            <div class="filter-row">
+              <span class="filter-label">二级分类</span>
+              <div class="filter-btns" id="filterCat2-guotai">
+                <button class="f-btn active" data-v="all">全部</button>
+                <button class="f-btn" data-v="宽基">宽基</button>
+                <button class="f-btn" data-v="行业">行业</button>
+                <button class="f-btn" data-v="主题">主题</button>
+                <button class="f-btn" data-v="风格因子">风格因子</button>
+              </div>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table id="etfTable-guotai">
+              <thead>
+                <tr>
+                  <th class="idx">序号</th>
+                  <th data-key="code">证券代码</th>
+                  <th data-key="name">ETF 名称</th>
+                  <th data-key="cat1">一级分类</th>
+                  <th data-key="cat2">二级分类</th>
+                  <th data-key="mgtFee" class="num">管理费率</th>
+                  <th data-key="trstFee" class="num">托管费率</th>
+                  <th data-key="indexName">跟踪指数</th>
+                  <th data-key="scaleYi" class="num">基金规模</th>
+                  <th data-key="lstDt">上市日期</th>
+                </tr>
+              </thead>
+              <tbody id="etfTbody-guotai"></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="chart-col">
+          <div class="panel chart-panel">
+            <div class="panel-head">
+              <h3>一级分类 · 产品结构</h3>
+              <div class="seg" id="segCat1-guotai">
+                <button class="seg-btn active" data-mode="scale">按规模</button>
+                <button class="seg-btn" data-mode="count">按数量</button>
+              </div>
+            </div>
+            <div class="chart" id="pieCat1-guotai"></div>
+          </div>
+          <div class="panel chart-panel">
+            <div class="panel-head">
+              <h3>权益类二级分类 · 产品结构</h3>
+              <div class="seg" id="segCat2-guotai">
+                <button class="seg-btn active" data-mode="scale">按规模</button>
+                <button class="seg-btn" data-mode="count">按数量</button>
+              </div>
+            </div>
+            <div class="chart" id="pieCat2-guotai"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="page hidden" id="page-huatai">
+      <header class="page-head">
+        <div>
+          <h2>华泰柏瑞 ETF 产品线透视</h2>
+          <p class="sub">华泰柏瑞基金管理有限公司 · 场内 ETF 产品结构总览</p>
+        </div>
+        <div class="stat-cards" id="statCards-huatai"></div>
+      </header>
+      <div class="split">
+        <div class="panel table-panel">
+          <div class="panel-head">
+            <h3>产品列表 <span class="count-badge" id="rowCount-huatai"></span></h3>
+            <span class="hint">点击表头排序</span>
+          </div>
+          <div class="filters">
+            <div class="filter-row">
+              <span class="filter-label">一级分类</span>
+              <div class="filter-btns" id="filterCat1-huatai">
+                <button class="f-btn active" data-v="all">全部</button>
+                <button class="f-btn" data-v="股票">股票</button>
+                <button class="f-btn" data-v="商品">商品</button>
+                <button class="f-btn" data-v="债券">债券</button>
+                <button class="f-btn" data-v="货币">货币</button>
+              </div>
+            </div>
+            <div class="filter-row">
+              <span class="filter-label">二级分类</span>
+              <div class="filter-btns" id="filterCat2-huatai">
+                <button class="f-btn active" data-v="all">全部</button>
+                <button class="f-btn" data-v="宽基">宽基</button>
+                <button class="f-btn" data-v="行业">行业</button>
+                <button class="f-btn" data-v="主题">主题</button>
+                <button class="f-btn" data-v="风格因子">风格因子</button>
+              </div>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table id="etfTable-huatai">
+              <thead>
+                <tr>
+                  <th class="idx">序号</th>
+                  <th data-key="code">证券代码</th>
+                  <th data-key="name">ETF 名称</th>
+                  <th data-key="cat1">一级分类</th>
+                  <th data-key="cat2">二级分类</th>
+                  <th data-key="mgtFee" class="num">管理费率</th>
+                  <th data-key="trstFee" class="num">托管费率</th>
+                  <th data-key="indexName">跟踪指数</th>
+                  <th data-key="scaleYi" class="num">基金规模</th>
+                  <th data-key="lstDt">上市日期</th>
+                </tr>
+              </thead>
+              <tbody id="etfTbody-huatai"></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="chart-col">
+          <div class="panel chart-panel">
+            <div class="panel-head">
+              <h3>一级分类 · 产品结构</h3>
+              <div class="seg" id="segCat1-huatai">
+                <button class="seg-btn active" data-mode="scale">按规模</button>
+                <button class="seg-btn" data-mode="count">按数量</button>
+              </div>
+            </div>
+            <div class="chart" id="pieCat1-huatai"></div>
+          </div>
+          <div class="panel chart-panel">
+            <div class="panel-head">
+              <h3>权益类二级分类 · 产品结构</h3>
+              <div class="seg" id="segCat2-huatai">
+                <button class="seg-btn active" data-mode="scale">按规模</button>
+                <button class="seg-btn" data-mode="count">按数量</button>
+              </div>
+            </div>
+            <div class="chart" id="pieCat2-huatai"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 市场竞争格局与生态位分析 ============ -->
+    <section class="page hidden" id="page-market">
+      <header class="page-head">
+        <div>
+          <h2>市场竞争格局与易方达生态位分析</h2>
+          <p class="sub">全市场头部管理人 · 按 6 类产品分析各赛道的竞争格局与易方达所处生态位</p>
+        </div>
+        <div class="market-tabs" id="marketTabs">
+          <button class="market-tab active" data-type="broad">宽基</button>
+          <button class="market-tab" data-type="industry_theme">行业 + 主题</button>
+          <button class="market-tab" data-type="factor">风格因子</button>
+          <button class="market-tab" data-type="bond">债券</button>
+          <button class="market-tab" data-type="commodity">商品</button>
+          <button class="market-tab" data-type="currency">货币</button>
+        </div>
+      </header>
+
+      <div class="market-body">
+        <div class="cmp-section">
+          <div class="panel">
+            <div class="panel-head">
+              <h3 id="mktMgrTitle">① 全市场该类管理人竞争格局（按规模排序）</h3>
+              <span class="hint" id="mktMgrCount"></span>
+            </div>
+            <div class="table-wrap">
+              <table class="mgr-table">
+                <thead><tr><th>排名</th><th>基金管理人</th><th class="num">规模(亿元)</th><th class="num">产品数</th><th class="num">占比</th><th>大单品</th></tr></thead>
+                <tbody id="mktMgrTbody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="cmp-section" id="mktIdxPanel">
+          <div class="panel">
+            <div class="panel-head">
+              <h3 id="mktIdxTitle">② 主流跟踪指数 · 全市场该类规模前 20</h3>
+              <span class="hint">按挂钩该指数的 ETF 规模合计排序</span>
+            </div>
+            <div class="table-wrap">
+              <table class="mgr-table">
+                <thead><tr><th>排名</th><th>跟踪指数</th><th class="num">规模(亿元)</th><th class="num">ETF 数</th><th>规模第一管理人</th><th>第一大单品</th></tr></thead>
+                <tbody id="mktIdxTbody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="cmp-section">
+          <div class="panel">
+            <div class="panel-head"><h3 id="mktAnalysisTitle">③ 易方达生态位与全市场各家特点</h3></div>
+            <div class="market-analysis" id="mktAnalysis"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 头部管理人对比分析 ============ -->
+    <section class="page hidden" id="page-compare">
+      <header class="page-head">
+        <div>
+          <h2>易方达 &amp; 头部管理人 ETF 对比分析</h2>
+          <p class="sub">易方达 / 华夏 / 国泰 / 华泰柏瑞 · 按产品类型横向对比</p>
+        </div>
+        <div class="stat-cards" id="cmpCards"></div>
+      </header>
+
+      <div class="cmp-section">
+        <div class="panel">
+          <div class="panel-head"><h3>一级分类 · 四家管理人对产品结构对比</h3></div>
+          <div class="chart-lg" id="cmpCat1Chart"></div>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><h3>权益二级分类 · 宽基 / 行业 / 主题 / 风格因子</h3></div>
+          <div class="chart-lg" id="cmpCat2Chart"></div>
+        </div>
+      </div>
+
+      <div class="cmp-section">
+        <div class="panel">
+          <div class="panel-head"><h3>大单品 · 各家各分类规模 TOP3</h3></div>
+          <div class="table-wrap cmp-table-wrap"><table id="cmpTopTable"><thead><tr><th>管理人</th><th>一级分类</th><th>权益二级</th><th>TOP1 产品</th><th>规模</th><th>TOP2 产品</th><th>规模</th><th>TOP3 产品</th><th>规模</th></tr></thead><tbody id="cmpTopTbody"></tbody></table></div>
+        </div>
+      </div>
+
+      <div class="cmp-section">
+        <div class="panel">
+          <div class="panel-head"><h3>易方达领先 / 落后分析 · 按产品类型</h3></div>
+          <div class="cmp-grid" id="cmpLeadGrid"></div>
+        </div>
+      </div>
+
+      <div class="cmp-section">
+        <div class="panel">
+          <div class="panel-head"><h3>细分赛道对比分析 · 易方达 vs 华夏 / 国泰 / 华泰柏瑞</h3></div>
+          <div class="table-wrap cmp-table-wrap">
+            <table class="track-table">
+              <thead>
+                <tr>
+                  <th>细分赛道</th>
+                  <th>易方达基金</th>
+                  <th>华夏基金</th>
+                  <th>国泰基金</th>
+                  <th>华泰柏瑞基金</th>
+                  <th>对比分析</th>
+                </tr>
+              </thead>
+              <tbody id="cmpTrackTbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/compare.js"></script>
+<script src="js/market.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
