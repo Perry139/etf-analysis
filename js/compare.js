@@ -72,8 +72,8 @@
 
   function list(m) { return M[m] || []; }
   function sumScale(rows) { return rows.reduce(function (s, r) { return s + (r.scaleYi || 0); }, 0); }
-  function fmt(v) { return v == null ? "—" : Number(v).toLocaleString("zh-CN", { maximumFractionDigits: 2 }); }
-  function fmt1(v) { return v == null ? "—" : Number(v).toLocaleString("zh-CN", { maximumFractionDigits: 1 }); }
+  function fmt(v) { return v == null ? "—" : (Math.round(Number(v) * 100) / 100).toLocaleString("zh-CN", { maximumFractionDigits: 2 }); }
+  function fmt1(v) { return v == null ? "—" : (Math.round(Number(v) * 10) / 10).toLocaleString("zh-CN", { maximumFractionDigits: 1 }); }
   function pct(a, b) { return b ? (a / b * 100).toFixed(1) : "—"; }
 
   function byCat1(rows, c1) { return rows.filter(function (r) { return r.cat1 === c1; }); }
