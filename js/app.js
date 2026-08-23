@@ -17,7 +17,7 @@
 
   // ---------- 工具 ----------
   function fmtScale(v) {
-    return v == null ? "—" : Number(v).toLocaleString("zh-CN", { maximumFractionDigits: 2 }) + " 亿";
+    return v == null ? "—" : (Math.round(Number(v) * 100) / 100).toLocaleString("zh-CN", { maximumFractionDigits: 2 }) + " 亿";
   }
   function fmtPct(v) {
     return v == null ? "—" : Number(v) + "%";
@@ -56,7 +56,7 @@
 
       var cards = [
         { k: "当前 ETF 数", v: total, u: "只" },
-        { k: "ETF 总规模", v: scaleSum.toLocaleString("zh-CN", { maximumFractionDigits: 2 }), u: "亿元" },
+        { k: "ETF 总规模", v: (Math.round(scaleSum * 100) / 100).toLocaleString("zh-CN", { maximumFractionDigits: 2 }), u: "亿元" },
         { k: "权益类产品", v: equityCount, u: "只 · 占 " + (total ? Math.round(equityCount / total * 100) : 0) + "%" },
         { k: "规模加权平均费率", v: avgFee == null ? "—" : avgFee.toFixed(3), u: "%" }
       ];
@@ -157,7 +157,7 @@
             var d = pp.data;
             var lines = pp.name + "<br/>";
             if (isScale) {
-              lines += "规模：" + (d.fallback ? "数据未提供" : d.scale.toLocaleString("zh-CN", { maximumFractionDigits: 2 }) + " 亿元");
+              lines += "规模：" + (d.fallback ? "数据未提供" : (Math.round(d.scale * 100) / 100).toLocaleString("zh-CN", { maximumFractionDigits: 2 }) + " 亿元");
               if (d.fallback) lines += "（按数量展示）<br/>数量：" + d.count + " 只";
             } else {
               lines += "数量：" + d.count + " 只";
