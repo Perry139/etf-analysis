@@ -23,7 +23,7 @@
     currency:       { label: "货币", cat1: "货币", cat2: ["货币"], title: "货币类" }
   };
 
-  function fmt(v) { return v == null ? "—" : Number(v).toLocaleString("zh-CN", { maximumFractionDigits: 2 }); }
+  function fmt(v) { return v == null ? "—" : (Math.round(Number(v) * 100) / 100).toLocaleString("zh-CN", { maximumFractionDigits: 2 }); }
   function sum(rows) { return rows.reduce(function (s, r) { return s + (r.scaleYi || 0); }, 0); }
   function topN(rows, n) {
     return rows.slice().sort(function (a, b) { return (b.scaleYi || 0) - (a.scaleYi || 0); }).slice(0, n);
@@ -194,7 +194,7 @@
     html += '<p>易方达在宽基赛道的核心是"指数大单品"模式：' + efTop3.map(function (r) { return '<b>' + r.name + '</b>(' + fmt(r.scaleYi) + '亿)'; }).join("、") +
       ' 构成第一梯队，占易方达宽基总规模的 ' + (inS.ef.scale ? (efTop3.reduce(function (s, r) { return s + (r.scaleYi || 0); }, 0) / inS.ef.scale * 100).toFixed(0) : 0) + '%。';
     if (inS.efRank === 1 && inS.t2) {
-      html += '对比华夏（' + inS.t2.scale + ' 亿，' + inS.t2.count + ' 只），易方达产品数更少但单品规模更大，属于"少而精"策略。</p>';
+      html += '对比华夏（' + fmt(inS.t2.scale) + ' 亿，' + inS.t2.count + ' 只），易方达产品数更少但单品规模更大，属于"少而精"策略。</p>';
     } else if (inS.gap1 > 0) {
       html += '对比第一名 ' + inS.t1.m + '（' + inS.t1.count + ' 只），易方达以较少产品实现了较高的集中规模。</p>';
     } else {
@@ -230,7 +230,7 @@
     html += '<p>易方达在行业+主题赛道重点布局的指数：' + topIdxNames.slice(0, 6).map(function (n) { return '<b>' + n + '</b>'; }).join("、") +
       '。核心大单品 ' + efTop5.slice(0, 3).map(function (r) { return r.name + '(' + fmt(r.scaleYi) + '亿)'; }).join("、") + '。</p>';
     if (inS.efRank === 2 && inS.t1) {
-      html += '<p>与第一名 ' + inS.t1.m + '（' + inS.t1.scale + ' 亿）相比，易方达产品布局广度相近（' + inS.ef.count + ' vs ' + inS.t1.count + ' 只），差距主要在单品爆款效应上。</p>';
+      html += '<p>与第一名 ' + inS.t1.m + '（' + fmt(inS.t1.scale) + ' 亿）相比，易方达产品布局广度相近（' + inS.ef.count + ' vs ' + inS.t1.count + ' 只），差距主要在单品爆款效应上。</p>';
     }
     return html;
   }
