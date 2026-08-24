@@ -109,7 +109,7 @@
       var isEf = r.m === "易方达基金";
       var isLead = i === 0;
       html += "<tr" + (isEf ? ' class="highlight"' : "") + ">" +
-        '<td class="rank">' + (i + 1) + (isLead ? ' <span class="crown">★</span>' : "") + "</td>" +
+        '<td class="rank">' + (i + 1) + (isLead ? ' <svg class="crown" width="10" height="10" viewBox="0 0 24 24" fill="currentColor" aria-label="第一"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>' : "") + "</td>" +
         "<td>" + r.m + "</td>" +
         '<td class="num">' + fmt(r.scale) + "</td>" +
         '<td class="num">' + r.count + "</td>" +
