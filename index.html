@@ -4,14 +4,20 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ETF 产品线透视 · 头部管理人 ETF 产品结构分析</title>
-<link rel="stylesheet" href="css/style.css?v=20260823b">
+<link rel="stylesheet" href="css/style.css?v=20260824a">
 <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
 </head>
 <body>
 <div class="layout">
   <aside class="sidebar">
     <div class="brand">
-      <div class="brand-logo">ETF</div>
+      <div class="brand-logo" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <rect x="3" y="13" width="4" height="8" rx="1" fill="rgba(255,255,255,0.55)"/>
+          <rect x="10" y="8" width="4" height="13" rx="1" fill="rgba(255,255,255,0.8)"/>
+          <rect x="17" y="4" width="4" height="17" rx="1" fill="#FFFFFF"/>
+        </svg>
+      </div>
       <div class="brand-text">
         <h1>ETF 产品线透视</h1>
         <p>头部管理人产品结构分析</p>
@@ -19,24 +25,12 @@
     </div>
     <nav class="nav">
       <div class="nav-label">管理人产品线</div>
-      <a class="nav-item active" data-page="efunds" href="#efunds">
-        <span class="nav-dot" style="background:#2563eb"></span>易方达基金
-      </a>
-      <a class="nav-item" data-page="chinaamc" href="#chinaamc">
-        <span class="nav-dot" style="background:#7c3aed"></span>华夏基金
-      </a>
-      <a class="nav-item" data-page="guotai" href="#guotai">
-        <span class="nav-dot" style="background:#0891b2"></span>国泰基金
-      </a>
-      <a class="nav-item" data-page="huatai" href="#huatai">
-        <span class="nav-dot" style="background:#ea580c"></span>华泰柏瑞基金
-      </a>
-      <a class="nav-item" data-page="market" href="#market">
-        <span class="nav-dot" style="background:#185f8a"></span>市场竞争格局
-      </a>
-      <a class="nav-item" data-page="compare" href="#compare">
-        <span class="nav-dot" style="background:#0f766e"></span>头部管理人对比
-      </a>
+      <a class="nav-item active" data-page="efunds" href="#efunds">易方达基金</a>
+      <a class="nav-item" data-page="chinaamc" href="#chinaamc">华夏基金</a>
+      <a class="nav-item" data-page="guotai" href="#guotai">国泰基金</a>
+      <a class="nav-item" data-page="huatai" href="#huatai">华泰柏瑞基金</a>
+      <a class="nav-item" data-page="market" href="#market">市场竞争格局</a>
+      <a class="nav-item" data-page="compare" href="#compare">头部管理人对比</a>
     </nav>
     <div class="sidebar-foot">
       <p>数据来源：易方达指数直通车</p>
@@ -487,9 +481,9 @@
   </main>
 </div>
 
-<script src="js/data.js?v=20260823b"></script>
-<script src="js/compare.js?v=20260823b"></script>
-<script src="js/market.js?v=20260823b"></script>
-<script src="js/app.js?v=20260823b"></script>
+<script src="js/data.js?v=20260824a"></script>
+<script src="js/compare.js?v=20260824a"></script>
+<script src="js/market.js?v=20260824a"></script>
+<script src="js/app.js?v=20260824a"></script>
 </body>
 </html>
