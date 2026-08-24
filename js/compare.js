@@ -113,8 +113,9 @@
     });
     charts.cmpCat1 = echarts.init(document.getElementById("cmpCat1Chart"));
     charts.cmpCat1.setOption({
+      color: ["#24413B", "#C7B9A0", "#5B7E9E", "#A8785A"],
       tooltip: { trigger: "axis", axisPointer: { type: "shadow" }, valueFormatter: function (v) { return fmt(v) + " 亿"; } },
-      legend: { top: 6, textStyle: { fontSize: 12, color: "#5c6b84" } },
+      legend: { top: 6, textStyle: { fontSize: 12, color: "#6B6862" } },
       grid: { left: 56, right: 20, top: 44, bottom: 30 },
       xAxis: { type: "category", data: cats, axisLabel: { fontSize: 12 } },
       yAxis: { type: "value", name: "规模(亿元)", nameTextStyle: { fontSize: 11 }, axisLabel: { fontSize: 11 } },
@@ -136,8 +137,9 @@
     });
     charts.cmpCat2 = echarts.init(document.getElementById("cmpCat2Chart"));
     charts.cmpCat2.setOption({
+      color: ["#24413B", "#C7B9A0", "#5B7E9E", "#A8785A"],
       tooltip: { trigger: "axis", axisPointer: { type: "shadow" }, valueFormatter: function (v) { return fmt(v) + " 亿"; } },
-      legend: { top: 6, textStyle: { fontSize: 12, color: "#5c6b84" } },
+      legend: { top: 6, textStyle: { fontSize: 12, color: "#6B6862" } },
       grid: { left: 56, right: 20, top: 44, bottom: 30 },
       xAxis: { type: "category", data: CAT2_ORDER, axisLabel: { fontSize: 12 } },
       yAxis: { type: "value", name: "规模(亿元)", nameTextStyle: { fontSize: 11 }, axisLabel: { fontSize: 11 } },
