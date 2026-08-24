@@ -109,7 +109,9 @@
         if (th.getAttribute("data-key") === st.sortKey) {
           var s = document.createElement("span");
           s.className = "arrow";
-          s.textContent = st.sortDesc ? "▼" : "▲";
+          s.innerHTML = st.sortDesc
+            ? '<svg width="8" height="6" viewBox="0 0 8 6"><path d="M4 6L0 0h8z" fill="currentColor"/></svg>'
+            : '<svg width="8" height="6" viewBox="0 0 8 6"><path d="M4 0l4 6H0z" fill="currentColor"/></svg>';
           th.appendChild(s);
         }
       });
@@ -172,7 +174,7 @@
           top: "middle",
           itemWidth: 10,
           itemHeight: 10,
-          textStyle: { fontSize: 12, color: "#5c6b84" }
+          textStyle: { fontSize: 12, color: "#6B6862" }
         },
         series: [{
           type: "pie",
@@ -180,7 +182,7 @@
           center: ["38%", "50%"],
           avoidLabelOverlap: true,
           itemStyle: { borderColor: "#fff", borderWidth: 2 },
-          label: { show: true, formatter: "{b}\n{d}%", fontSize: 12, color: "#1f2a3d" },
+          label: { show: true, formatter: "{b}\n{d}%", fontSize: 12, color: "#1C1B18" },
           labelLine: { length: 10, length2: 8 },
           data: data
         }]
@@ -190,8 +192,8 @@
     function renderCharts() {
       var cat1 = aggregate(rows, "cat1", CAT1_ORDER, st.mode1);
       var cat2 = aggregate(rows.filter(function (r) { return r.cat1 === "股票"; }), "cat2", CAT2_ORDER, st.mode2);
-      st.pie1.setOption(baseOption(st.mode1, cat1, ["#2563eb", "#ea580c", "#0891b2", "#16a34a"]), true);
-      st.pie2.setOption(baseOption(st.mode2, cat2, ["#2563eb", "#7c3aed", "#ea580c", "#0891b2"]), true);
+      st.pie1.setOption(baseOption(st.mode1, cat1, ["#24413B", "#C7B9A0", "#93A69A", "#5B7E9E"]), true);
+      st.pie2.setOption(baseOption(st.mode2, cat2, ["#24413B", "#5B7E9E", "#C7B9A0", "#A8785A"]), true);
     }
 
     function bindSeg(segId, setter) {
