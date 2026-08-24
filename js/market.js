@@ -45,11 +45,11 @@
     return { big: big, mid: mid, sm: sm };
   }
 
-  // 断档阈值选头部：size[N]/size[N-1] < 0.5 停止；最小规模 < 10 亿停止；5~15 家
+  // 断档阈值选头部：size[N]/size[N-1] < 0.5 停止；最小规模 < 10 亿停止；5~20 家
   function pickHead(ranks) {
     if (ranks.length <= 5) return ranks.slice();
     var out = [ranks[0]];
-    for (var i = 1; i < ranks.length && i < 15; i++) {
+    for (var i = 1; i < ranks.length && i < 20; i++) {
       var prev = ranks[i - 1].s, cur = ranks[i].s;
       if (cur < 10) break;
       if (out.length >= 5 && prev > 0 && cur / prev < 0.5) break;
