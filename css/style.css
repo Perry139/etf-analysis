@@ -525,7 +525,7 @@ th.idx { width: 48px; text-align: center; }
   flex-shrink: 0;
 }
 .global-nav .brand-logo {
-  height: 28px;
+  height: 32px;
   width: auto;
   display: block;
 }
@@ -559,7 +559,7 @@ th.idx { width: 48px; text-align: center; }
 /* ---------- Hero（全宽大标题） ---------- */
 .hero {
   position: relative;
-  background: linear-gradient(160deg, #003B73 0%, #005096 45%, #1E6FBF 100%);
+  background: #003B73 url("assets/efunds_banner.jpg") center/cover no-repeat;
   color: var(--text-on-dark);
   padding: 120px 24px 100px;
   text-align: center;
@@ -569,7 +569,7 @@ th.idx { width: 48px; text-align: center; }
   content: "";
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse at 70% 30%, rgba(255,255,255,0.08), transparent 60%);
+  background: linear-gradient(180deg, rgba(0,30,70,0.55) 0%, rgba(0,40,90,0.45) 100%);
   pointer-events: none;
 }
 .hero-inner {
@@ -626,12 +626,23 @@ th.idx { width: 48px; text-align: center; }
 }
 .btn-secondary:hover { background: rgba(255, 255, 255, 0.12); border-color: #fff; }
 
-/* ---------- Tile Grid（6 个产品卡片） ---------- */
+/* ---------- Tile Grid（首页卡片） ---------- */
+/* 第一行 4 列（4 家基金公司），第二行 2 列（市场格局 + 对比） */
 .tile-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: 1fr;
   gap: 0;
   background: #fff;
+}
+.tile-half { grid-column: span 2; }
+@media (max-width: 1068px) {
+  .tile-grid { grid-template-columns: repeat(2, 1fr); }
+  .tile-half { grid-column: span 2; }
+}
+@media (max-width: 600px) {
+  .tile-grid { grid-template-columns: 1fr; }
+  .tile-half { grid-column: span 1; }
 }
 .tile {
   position: relative;
@@ -696,13 +707,13 @@ th.idx { width: 48px; text-align: center; }
 .tile-dark .tile-desc, .tile-dark-2 .tile-desc { color: var(--text-on-dark-muted); }
 
 .tile-stat {
-  display: inline-block;
+  display: inline-flex;
+  align-items: baseline;
   margin-right: 36px;
   margin-bottom: 24px;
   vertical-align: bottom;
 }
 .tile-stat-num {
-  display: block;
   font-size: 48px;
   font-weight: 600;
   line-height: 1;
@@ -710,11 +721,10 @@ th.idx { width: 48px; text-align: center; }
   font-variant-numeric: tabular-nums;
 }
 .tile-stat-label {
-  display: block;
-  font-size: 13px;
-  font-weight: 500;
-  letter-spacing: 0.5px;
-  margin-top: 6px;
+  font-size: 15px;
+  font-weight: 400;
+  letter-spacing: 0.2px;
+  margin-left: 8px;
   color: var(--text-3);
 }
 .tile-dark .tile-stat-label, .tile-dark-2 .tile-stat-label { color: var(--text-on-dark-muted); }
