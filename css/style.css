@@ -1,24 +1,28 @@
 /* ============================================================
-   ETF 产品线透视 · Swiss Minimal Design System
-   Palette: 暖米白底 / 白卡片 / 暖灰边框 / 深松绿唯一强调色
-   Spacing: 8px grid · Type: system stack + tabular numerals
+   ETF 产品线透视 · Apple Minimal + 易方达蓝
+   Palette: 白/米白/近黑 交替 Tile · 易方达蓝 #005096 作主强调
+   Spacing: 8px grid · Type: SF Pro Display/Text stack (system fallback)
    ============================================================ */
 :root {
-  --bg: #F6F5F1;
+  --bg: #FFFFFF;
   --panel: #FFFFFF;
-  --border: #E8E6E0;
-  --border-strong: #D8D5CD;
-  --text: #1C1B18;
-  --text-2: #6B6862;
-  --text-3: #A5A199;
-  --accent: #24413B;
-  --accent-soft: #E9EEEC;
-  --accent-hover: #2E534B;
-  --hover: #F3F2ED;
-  --radius: 10px;
-  --shadow: 0 1px 2px rgba(28, 27, 24, 0.04);
-  --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "PingFang SC",
-    "HarmonyOS Sans SC", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+  --parchment: #F5F5F7;
+  --border: #E0E0E0;
+  --border-soft: rgba(0, 0, 0, 0.08);
+  --text: #1D1D1F;
+  --text-2: #333333;
+  --text-3: #7A7A7A;
+  --text-on-dark: #FFFFFF;
+  --text-on-dark-muted: #CCCCCC;
+  --tile-dark: #272729;
+  --tile-dark-2: #2A2A2C;
+  --accent: #005096;
+  --accent-on-dark: #2997FF;
+  --hover: #F5F5F7;
+  --radius: 18px;
+  --shadow-product: 0 3px 5px 30px rgba(0, 0, 0, 0.22);
+  --font: "SF Pro Display", "SF Pro Text", system-ui, -apple-system, BlinkMacSystemFont,
+    "PingFang SC", "HarmonyOS Sans SC", "Microsoft YaHei", sans-serif;
   --mono: "SF Mono", "Cascadia Code", Consolas, monospace;
 }
 
@@ -29,20 +33,23 @@ body {
   font-family: var(--font);
   background: var(--bg);
   color: var(--text);
-  font-size: 14px;
+  font-size: 17px;
+  line-height: 1.47;
+  letter-spacing: -0.374px;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
 
 ::selection { background: var(--accent); color: #fff; }
 
-/* 滚动条（细腻） */
+/* 滚动条 */
 ::-webkit-scrollbar { width: 8px; height: 8px; }
-::-webkit-scrollbar-thumb { background: #D8D5CD; border-radius: 4px; }
-::-webkit-scrollbar-thumb:hover { background: #C4C1B8; }
+::-webkit-scrollbar-thumb { background: #D0CFCB; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #B8B7B2; }
 ::-webkit-scrollbar-track { background: transparent; }
 
-.layout { display: flex; min-height: 100vh; }
+/* 布局：顶部 nav + 主内容（column） */
+.layout { display: flex; flex-direction: column; min-height: 100vh; }
 
 /* ============ 侧边栏（浅色 · 极简） ============ */
 .sidebar {
@@ -112,8 +119,9 @@ body {
 .sidebar-foot span { color: var(--text-2); font-weight: 500; font-variant-numeric: tabular-nums; }
 
 /* ============ 内容区 ============ */
-.content { flex: 1; padding: 32px 36px; min-width: 0; }
-
+.content { flex: 1; min-width: 0; }
+/* 子页面统一留白（首页 #page-home 设为 padding:0 做 full-bleed） */
+.page { padding: 40px 48px 80px; min-width: 0; }
 .page.hidden { display: none; }
 
 .page-head {
@@ -478,4 +486,296 @@ th.idx { width: 48px; text-align: center; }
   .panel-head { padding: 14px 16px; }
   .filters { padding: 12px 16px 14px; }
   .market-analysis { padding: 16px; }
+}
+
+/* ============================================================
+   首页（Home）：顶部 nav + Hero + 6 个产品 Tile
+   Apple 全宽 tile 交替明暗 · 易方达蓝单一强调
+   ============================================================ */
+
+/* ---------- 顶部 Global Nav（Apple 式细条） ---------- */
+.global-nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(29, 29, 31, 0.78);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  height: 52px;
+  display: flex;
+  align-items: center;
+  color: var(--text-on-dark);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+.global-nav-inner {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+.global-nav .brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: inherit;
+  flex-shrink: 0;
+}
+.global-nav .brand-logo {
+  height: 28px;
+  width: auto;
+  display: block;
+}
+.global-nav .brand-text {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  white-space: nowrap;
+}
+.global-nav-links {
+  display: flex;
+  gap: 4px;
+  margin-left: auto;
+}
+.global-nav .nav-link {
+  color: rgba(255, 255, 255, 0.78);
+  text-decoration: none;
+  font-size: 13.5px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  transition: color 0.15s, background 0.15s;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.global-nav .nav-link:hover { color: #fff; background: rgba(255, 255, 255, 0.08); }
+.global-nav .nav-link.active { color: #fff; background: rgba(0, 80, 150, 0.55); }
+
+/* ---------- 首页基础 ---------- */
+#page-home { padding: 0; }
+
+/* ---------- Hero（全宽大标题） ---------- */
+.hero {
+  position: relative;
+  background: linear-gradient(160deg, #003B73 0%, #005096 45%, #1E6FBF 100%);
+  color: var(--text-on-dark);
+  padding: 120px 24px 100px;
+  text-align: center;
+  overflow: hidden;
+}
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 70% 30%, rgba(255,255,255,0.08), transparent 60%);
+  pointer-events: none;
+}
+.hero-inner {
+  position: relative;
+  max-width: 980px;
+  margin: 0 auto;
+}
+.hero-title {
+  font-size: 56px;
+  font-weight: 600;
+  line-height: 1.07;
+  letter-spacing: -0.28px;
+  color: #fff;
+  margin: 0 0 18px;
+}
+.hero-lead {
+  font-size: 24px;
+  font-weight: 300;
+  line-height: 1.5;
+  letter-spacing: 0;
+  color: rgba(255, 255, 255, 0.88);
+  margin: 0 auto 36px;
+  max-width: 720px;
+}
+.hero-cta {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* ---------- 按钮（Apple Pill） ---------- */
+.btn {
+  display: inline-block;
+  font-family: inherit;
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.374px;
+  padding: 13px 28px;
+  border-radius: 9999px;
+  text-decoration: none;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: background 0.18s, color 0.18s, transform 0.12s, border-color 0.18s;
+}
+.btn:active { transform: scale(0.96); }
+.btn-primary { background: var(--accent); color: #fff; }
+.btn-primary:hover { background: #0066CC; }
+.btn-secondary {
+  background: transparent;
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.5);
+}
+.btn-secondary:hover { background: rgba(255, 255, 255, 0.12); border-color: #fff; }
+
+/* ---------- Tile Grid（6 个产品卡片） ---------- */
+.tile-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  background: #fff;
+}
+.tile {
+  position: relative;
+  display: block;
+  text-decoration: none;
+  color: var(--text);
+  background: #fff;
+  min-height: 480px;
+  padding: 60px 48px 48px;
+  overflow: hidden;
+  border: 1px solid var(--border-soft);
+  border-width: 0 0 0 0;
+  transition: transform 0.25s ease;
+  cursor: pointer;
+}
+.tile:hover { transform: translateY(-4px); }
+
+.tile-light { background: #fff; color: var(--text); }
+.tile-parchment { background: var(--parchment); color: var(--text); }
+.tile-dark { background: var(--tile-dark); color: var(--text-on-dark); }
+.tile-dark-2 { background: var(--tile-dark-2); color: var(--text-on-dark); }
+
+.tile-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0.18;
+  z-index: 0;
+  transition: opacity 0.3s;
+}
+.tile-dark .tile-bg, .tile-dark-2 .tile-bg { opacity: 0.22; }
+.tile:hover .tile-bg { opacity: 0.28; }
+
+.tile-body { position: relative; z-index: 1; }
+.tile-kicker {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 14px;
+}
+.tile-dark .tile-kicker, .tile-dark-2 .tile-kicker { color: var(--accent-on-dark); }
+.tile-title {
+  font-size: 40px;
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: 0;
+  margin: 0 0 14px;
+}
+.tile-desc {
+  font-size: 19px;
+  font-weight: 400;
+  line-height: 1.4;
+  letter-spacing: 0;
+  margin: 0 0 28px;
+  color: var(--text-2);
+  max-width: 360px;
+}
+.tile-dark .tile-desc, .tile-dark-2 .tile-desc { color: var(--text-on-dark-muted); }
+
+.tile-stat {
+  display: inline-block;
+  margin-right: 36px;
+  margin-bottom: 24px;
+  vertical-align: bottom;
+}
+.tile-stat-num {
+  display: block;
+  font-size: 48px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.5px;
+  font-variant-numeric: tabular-nums;
+}
+.tile-stat-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  margin-top: 6px;
+  color: var(--text-3);
+}
+.tile-dark .tile-stat-label, .tile-dark-2 .tile-stat-label { color: var(--text-on-dark-muted); }
+
+.tile-cta {
+  display: inline-block;
+  font-size: 17px;
+  font-weight: 400;
+  color: var(--accent);
+  letter-spacing: -0.374px;
+}
+.tile-dark .tile-cta, .tile-dark-2 .tile-cta { color: var(--accent-on-dark); }
+.tile:hover .tile-cta::after { content: " →"; }
+
+/* ---------- 首页底部 ---------- */
+.site-foot {
+  background: var(--parchment);
+  padding: 48px 48px 56px;
+  text-align: center;
+  color: var(--text-3);
+}
+.site-foot p {
+  font-size: 12px;
+  line-height: 1.6;
+  margin: 0 auto 8px;
+  max-width: 720px;
+  letter-spacing: 0;
+}
+.site-foot .foot-date { color: var(--text-2); }
+
+/* ============================================================
+   响应式（首页 + nav + 全局断点）
+   ============================================================ */
+@media (max-width: 1068px) {
+  .tile-grid { grid-template-columns: repeat(2, 1fr); }
+  .tile-title { font-size: 34px; }
+  .hero-title { font-size: 48px; }
+  .hero-lead { font-size: 21px; }
+  .global-nav-links { gap: 0; }
+  .global-nav .nav-link { padding: 8px 10px; font-size: 12.5px; }
+}
+@media (max-width: 834px) {
+  .layout { display: block; }
+  .global-nav { height: 48px; }
+  .global-nav-inner { padding: 0 16px; gap: 12px; }
+  .global-nav .brand-text { display: none; }
+  .global-nav-links { gap: 0; flex-wrap: wrap; }
+  .global-nav .nav-link { font-size: 12px; padding: 6px 10px; }
+  .hero { padding: 80px 20px 60px; }
+  .hero-title { font-size: 40px; }
+  .hero-lead { font-size: 19px; }
+  .tile-grid { grid-template-columns: 1fr; }
+  .tile { min-height: 360px; padding: 48px 24px 36px; }
+  .tile-title { font-size: 30px; }
+  .tile-stat-num { font-size: 40px; }
+  .site-foot { padding: 32px 20px; }
+  .page { padding: 24px 16px 40px; }
+}
+@media (max-width: 480px) {
+  .hero-title { font-size: 32px; }
+  .tile-title { font-size: 26px; }
+  .tile-stat-num { font-size: 34px; }
+  .global-nav .nav-link { padding: 6px 8px; font-size: 11px; }
 }
