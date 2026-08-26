@@ -281,15 +281,15 @@
       return { count: rows.length, scale: sum(rows) };
     }
     var tiles = [
-      { page: "efunds", mgr: "易方达基金", theme: "light",
+      { page: "efunds", mgr: "易方达基金", theme: "light", size: "small",
         img: "assets/zszq_header.jpg", kicker: "Equity · Broad Market Leader" },
-      { page: "chinaamc", mgr: "华夏基金", theme: "dark" },
-      { page: "guotai", mgr: "国泰基金", theme: "parchment" },
-      { page: "huatai", mgr: "华泰柏瑞基金", theme: "dark-2" },
-      { page: "market", theme: "light", custom: true,
+      { page: "chinaamc", mgr: "华夏基金", theme: "dark", size: "small" },
+      { page: "guotai", mgr: "国泰基金", theme: "parchment", size: "small" },
+      { page: "huatai", mgr: "华泰柏瑞基金", theme: "dark-2", size: "small" },
+      { page: "market", theme: "light", custom: true, size: "half",
         kicker: "All · Market Pulse",
         title: "市场竞争格局", desc: Object.keys(mm).length + " 家管理人 · " + (DATA.marketTotal || 0) + " 只产品 · 全市场扫描" },
-      { page: "compare", theme: "parchment", custom: true,
+      { page: "compare", theme: "parchment", custom: true, size: "half",
         kicker: "Compare · Head-to-Head",
         title: "头部管理人对比", desc: "易方达 / 华夏 / 国泰 / 华泰柏瑞 横向对比" }
     ];
@@ -311,7 +311,8 @@
       }
       var imgHtml = t.img ? '<div class="tile-bg" style="background-image:url(' + t.img + ')"></div>' : '';
       var kicker = t.kicker ? '<span class="tile-kicker">' + t.kicker + '</span>' : '';
-      return '<a class="tile tile-' + t.theme + '" href="#' + t.page + '" data-page="' + t.page + '">' +
+      var sizeCls = t.size === "half" ? " tile-half" : "";
+      return '<a class="tile tile-' + t.theme + sizeCls + '" href="#' + t.page + '" data-page="' + t.page + '">' +
         imgHtml +
         '<div class="tile-body">' +
           kicker +
