@@ -373,28 +373,6 @@
         }]
       }, true);
     } catch (e) { /* 单图失败不影响其他 */ }
-
-    // ③ 管理费率分布
-    try {
-      var feeMap = {};
-      data.pool.forEach(function (r) {
-        if (r.mgtFee == null) return;
-        var f = Math.round(Number(r.mgtFee) * 100) / 100;
-        feeMap[f] = (feeMap[f] || 0) + 1;
-      });
-      var feeKeys = Object.keys(feeMap).map(Number).sort(function (a, b) { return a - b; });
-      var feeChart = vizInit("mktFeeChart");
-      if (feeChart) {
-        var hasFee = feeKeys.length > 0;
-        feeChart.setOption({
-          tooltip: { trigger: "axis", axisPointer: { type: "shadow" } },
-          grid: { left: 8, right: 16, top: 10, bottom: 8, containLabel: true },
-          xAxis: { type: "category", data: hasFee ? feeKeys.map(function (f) { return f.toFixed(2) + "%"; }) : ["无费率数据"], axisLabel: { fontSize: 11 } },
-          yAxis: { type: "value", name: "产品数", nameTextStyle: { fontSize: 11 }, axisLabel: { fontSize: 11 }, splitLine: { lineStyle: { color: "#EFEEE9" } } },
-          series: [{ type: "bar", data: hasFee ? feeKeys.map(function (f) { return feeMap[f]; }) : [], barMaxWidth: 22, itemStyle: { borderRadius: [3, 3, 0, 0], color: "#93A69A" } }]
-        }, true);
-      }
-    } catch (e) { /* 单图失败不影响其他 */ }
   }
 
   function renderTab(typeKey) {
