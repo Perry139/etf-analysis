@@ -24,6 +24,14 @@
   };
 
   function fmt(v) { return v == null ? "—" : (Math.round(Number(v) * 100) / 100).toLocaleString("zh-CN", { maximumFractionDigits: 2 }); }
+
+  // 产品布局广度对比（数据驱动，不写死结论）
+  function breadthTxt(efCount, otherCount) {
+    var d = efCount - otherCount;
+    if (d > 0) return "产品布局更广（多 " + d + " 只）";
+    if (d < 0) return "产品数更少（少 " + (-d) + " 只）";
+    return "产品布局广度相当";
+  }
   function sum(rows) { return rows.reduce(function (s, r) { return s + (r.scaleYi || 0); }, 0); }
   function topN(rows, n) {
     return rows.slice().sort(function (a, b) { return (b.scaleYi || 0) - (a.scaleYi || 0); }).slice(0, n);
@@ -194,9 +202,12 @@
     html += '<p>易方达在宽基赛道的核心是"指数大单品"模式：' + efTop3.map(function (r) { return '<b>' + r.name + '</b>(' + fmt(r.scaleYi) + '亿)'; }).join("、") +
       ' 构成第一梯队，占易方达宽基总规模的 ' + (inS.ef.scale ? (efTop3.reduce(function (s, r) { return s + (r.scaleYi || 0); }, 0) / inS.ef.scale * 100).toFixed(0) : 0) + '%。';
     if (inS.efRank === 1 && inS.t2) {
-      html += '对比华夏（' + fmt(inS.t2.scale) + ' 亿，' + inS.t2.count + ' 只），易方达产品数更少但单品规模更大，属于"少而精"策略。</p>';
+      var bt1 = breadthTxt(inS.ef.count, inS.t2.count);
+      var efTop1 = efTop3[0];
+      html += '对比华夏（' + fmt(inS.t2.scale) + ' 亿、' + inS.t2.count + ' 只），易方达' + bt1 + '，规模由核心大单品 <b>' + efTop1.name + '</b>（' + fmt(efTop1.scaleYi) + ' 亿）强势扛起。</p>';
     } else if (inS.gap1 > 0) {
-      html += '对比第一名 ' + inS.t1.m + '（' + inS.t1.count + ' 只），易方达以较少产品实现了较高的集中规模。</p>';
+      var bt2 = breadthTxt(inS.ef.count, inS.t1.count);
+      html += '对比第一名 ' + inS.t1.m + '（' + fmt(inS.t1.scale) + ' 亿、' + inS.t1.count + ' 只），易方达' + bt2 + '，以少数大单品追赶。</p>';
     } else {
       html += '</p>';
     }
@@ -230,7 +241,10 @@
     html += '<p>易方达在行业+主题赛道重点布局的指数：' + topIdxNames.slice(0, 6).map(function (n) { return '<b>' + n + '</b>'; }).join("、") +
       '。核心大单品 ' + efTop5.slice(0, 3).map(function (r) { return r.name + '(' + fmt(r.scaleYi) + '亿)'; }).join("、") + '。</p>';
     if (inS.efRank === 2 && inS.t1) {
-      html += '<p>与第一名 ' + inS.t1.m + '（' + fmt(inS.t1.scale) + ' 亿）相比，易方达产品布局广度相近（' + inS.ef.count + ' vs ' + inS.t1.count + ' 只），差距主要在单品爆款效应上。</p>';
+      var bd3 = breadthTxt(inS.ef.count, inS.t1.count);
+      var efTopN = topN(efRows, 1)[0];
+      html += '<p>与第一名 ' + inS.t1.m + '（' + fmt(inS.t1.scale) + ' 亿、' + inS.t1.count + ' 只）相比，易方达' + bd3 +
+        '，差距主要体现在单品规模：易方达最大单品为 ' + (efTopN ? efTopN.name + '（' + fmt(efTopN.scaleYi) + ' 亿）' : "—") + '。</p>';
     }
     return html;
   }
@@ -300,6 +314,80 @@
     document.getElementById("mktAnalysis").innerHTML = html;
   }
 
+  // ============ 可视化：TOP产品柱状图 / 管理人产品结构树 / 费率分布 ============
+  var VIZ_PALETTE = ["#24413B", "#C7B9A0", "#93A69A", "#5B7E9E", "#A8785A", "#80798A", "#B3858A", "#7C7B66"];
+  var vizCharts = {};
+
+  function vizInit(id) {
+    if (vizCharts[id]) return vizCharts[id];
+    var el = document.getElementById(id);
+    if (!el) return null;
+    var ch = echarts.init(el);
+    vizCharts[id] = ch;
+    return ch;
+  }
+
+  function renderViz(data) {
+    // ① TOP 15 产品
+    var top15 = data.pool.slice().sort(function (a, b) { return (b.scaleYi || 0) - (a.scaleYi || 0); }).slice(0, 15);
+    var tNames = top15.map(function (r) { return r.name; }).reverse();
+    var tScales = top15.map(function (r) { return +(r.scaleYi || 0).toFixed(2); }).reverse();
+    var topChart = vizInit("mktTopChart");
+    if (topChart) topChart.setOption({
+      tooltip: { trigger: "axis", axisPointer: { type: "shadow" }, valueFormatter: function (v) { return v + " 亿"; } },
+      grid: { left: 8, right: 60, top: 8, bottom: 8, containLabel: true },
+      xAxis: { type: "value", axisLabel: { fontSize: 11, formatter: "{value}亿" }, splitLine: { lineStyle: { color: "#EFEEE9" } } },
+      yAxis: { type: "category", data: tNames, axisLabel: { fontSize: 11, width: 120, overflow: "truncate" } },
+      series: [{
+        type: "bar", data: tScales, barMaxWidth: 14,
+        itemStyle: { borderRadius: [0, 3, 3, 0], color: "#24413B" },
+        label: { show: true, position: "right", fontSize: 10, color: "#6B6862", formatter: "{c}" }
+      }]
+    }, true);
+
+    // ② 管理人产品结构树（头部前 8 家，各取 TOP3 产品）
+    var treeData = data.head.slice(0, 8).map(function (mg) {
+      var cIdx = data.head.indexOf(mg) % VIZ_PALETTE.length;
+      var etfs = data.pool.filter(function (r) { return r.owner === mg.m; })
+        .slice().sort(function (a, b) { return (b.scaleYi || 0) - (a.scaleYi || 0); }).slice(0, 3);
+      if (!etfs.length) return null;
+      return {
+        name: mg.m + " · " + fmt(sum(etfs)),
+        itemStyle: { color: VIZ_PALETTE[cIdx] },
+        children: etfs.map(function (r) {
+          return { name: r.name + " · " + fmt(r.scaleYi) + "亿", value: +(r.scaleYi || 0).toFixed(2), itemStyle: { color: VIZ_PALETTE[cIdx] } };
+        })
+      };
+    }).filter(Boolean);
+    var treeChart = vizInit("mktTreeChart");
+    if (treeChart) treeChart.setOption({
+      tooltip: { formatter: function (p) { return p.name; } },
+      series: [{
+        type: "treemap", roam: false, nodeClick: false, breadcrumb: { show: false },
+        itemStyle: { borderColor: "#fff", borderWidth: 2, gapWidth: 2 },
+        label: { show: true, fontSize: 11, color: "#fff", formatter: function (p) { return p.name; } },
+        data: treeData
+      }]
+    }, true);
+
+    // ③ 管理费率分布
+    var feeMap = {};
+    data.pool.forEach(function (r) {
+      if (r.mgtFee == null) return;
+      var f = +Number(r.mgtFee).toFixed(2);
+      feeMap[f] = (feeMap[f] || 0) + 1;
+    });
+    var feeKeys = Object.keys(feeMap).map(Number).sort(function (a, b) { return a - b; });
+    var feeChart = vizInit("mktFeeChart");
+    if (feeChart) feeChart.setOption({
+      tooltip: { trigger: "axis", axisPointer: { type: "shadow" } },
+      grid: { left: 8, right: 16, top: 10, bottom: 8, containLabel: true },
+      xAxis: { type: "category", data: feeKeys.map(function (f) { return f.toFixed(2) + "%"; }), axisLabel: { fontSize: 11 } },
+      yAxis: { type: "value", name: "产品数", nameTextStyle: { fontSize: 11 }, axisLabel: { fontSize: 11 }, splitLine: { lineStyle: { color: "#EFEEE9" } } },
+      series: [{ type: "bar", data: feeKeys.map(function (f) { return feeMap[f]; }), barMaxWidth: 22, itemStyle: { borderRadius: [3, 3, 0, 0], color: "#93A69A" } }]
+    }, true);
+  }
+
   function renderTab(typeKey) {
     var def = TYPE_DEFS[typeKey] || TYPE_DEFS.broad;
     var data = buildData(typeKey);
@@ -317,6 +405,7 @@
     }
 
     renderMgrTable(data);
+    renderViz(data);
     renderAnalysis(data);
   }
 
