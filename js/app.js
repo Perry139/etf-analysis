@@ -244,9 +244,9 @@
 
   // ---------- 导航 ----------
   function switchPage(page) {
-    var valid = ["efunds", "compare", "chinaamc", "guotai", "huatai", "market"];
-    if (valid.indexOf(page) < 0) page = "efunds";
-    document.querySelectorAll(".nav-item").forEach(function (a) {
+    var valid = ["home", "efunds", "compare", "chinaamc", "guotai", "huatai", "market"];
+    if (valid.indexOf(page) < 0) page = "home";
+    document.querySelectorAll(".nav-link, .nav-item").forEach(function (a) {
       a.classList.toggle("active", a.getAttribute("data-page") === page);
     });
     document.querySelectorAll(".page").forEach(function (s) {
@@ -255,14 +255,74 @@
     if (page === "compare" && window.CMP_INIT) window.CMP_INIT();
     if (page === "market" && window.MKT_INIT) window.MKT_INIT();
     if (pageRenders[page]) pageRenders[page].resize();
+    if (page === "home") renderHome();
+    window.scrollTo(0, 0);
   }
 
-  document.querySelectorAll(".nav-item").forEach(function (a) {
+  document.querySelectorAll(".nav-link, .nav-item").forEach(function (a) {
     a.addEventListener("click", function (e) {
       e.preventDefault();
       switchPage(a.getAttribute("data-page"));
     });
   });
+
+  // ---------- 首页（Hero + 6 个产品 Tile） ----------
+  function renderHome() {
+    var grid = document.getElementById("homeTiles");
+    if (!grid) return;
+    var mm = DATA.marketManagers || {};
+    function sum(rows) { return (rows || []).reduce(function (s, r) { return s + (r.scaleYi || 0); }, 0); }
+    function fmtYi(v) {
+      if (v >= 10000) return (v / 10000).toFixed(2) + " 万亿";
+      return v.toFixed(0) + " 亿";
+    }
+    function stat(mgr) {
+      var rows = mm[mgr] || [];
+      return { count: rows.length, scale: sum(rows) };
+    }
+    var tiles = [
+      { page: "efunds", mgr: "易方达基金", theme: "light",
+        img: "assets/zszq_header.jpg", kicker: "Equity · Broad Market Leader" },
+      { page: "chinaamc", mgr: "华夏基金", theme: "dark" },
+      { page: "guotai", mgr: "国泰基金", theme: "parchment" },
+      { page: "huatai", mgr: "华泰柏瑞基金", theme: "dark-2" },
+      { page: "market", theme: "light", custom: true,
+        kicker: "All · Market Pulse",
+        title: "市场竞争格局", desc: Object.keys(mm).length + " 家管理人 · " + (DATA.marketTotal || 0) + " 只产品 · 全市场扫描" },
+      { page: "compare", theme: "parchment", custom: true,
+        kicker: "Compare · Head-to-Head",
+        title: "头部管理人对比", desc: "易方达 / 华夏 / 国泰 / 华泰柏瑞 横向对比" }
+    ];
+    grid.innerHTML = tiles.map(function (t) {
+      var s = t.custom ? null : stat(t.mgr);
+      var title = t.custom ? t.title : t.mgr;
+      var desc, statHtml;
+      if (t.custom) {
+        desc = t.desc;
+        statHtml = "";
+      } else {
+        desc = "管理 " + s.count + " 只 ETF · 合计 " + fmtYi(s.scale) + " 规模";
+        statHtml = '<div class="tile-stat">' +
+          '<span class="tile-stat-num">' + s.count + '</span>' +
+          '<span class="tile-stat-label">只产品</span></div>' +
+          '<div class="tile-stat tile-stat-scale">' +
+          '<span class="tile-stat-num">' + s.scale.toFixed(0) + '</span>' +
+          '<span class="tile-stat-label">亿元规模</span></div>';
+      }
+      var imgHtml = t.img ? '<div class="tile-bg" style="background-image:url(' + t.img + ')"></div>' : '';
+      var kicker = t.kicker ? '<span class="tile-kicker">' + t.kicker + '</span>' : '';
+      return '<a class="tile tile-' + t.theme + '" href="#' + t.page + '" data-page="' + t.page + '">' +
+        imgHtml +
+        '<div class="tile-body">' +
+          kicker +
+          '<h3 class="tile-title">' + title + '</h3>' +
+          '<p class="tile-desc">' + desc + '</p>' +
+          statHtml +
+          '<span class="tile-cta">查看详情 →</span>' +
+        '</div>' +
+      '</a>';
+    }).join("");
+  }
 
   function routeFromHash() {
     var h = location.hash.replace("#", "");
@@ -270,11 +330,13 @@
       switchPage("market");
       return;
     }
-    switchPage(h || "efunds");
+    switchPage(h || "home");
   }
   window.addEventListener("hashchange", routeFromHash);
 
   // ---------- 启动 ----------
-  document.getElementById("dataDate").textContent = DATA.dataDate || "—";
+  var dde = document.getElementById("dataDate");
+  if (dde) dde.textContent = DATA.dataDate || "—";
+  renderHome();
   routeFromHash();
 })();
