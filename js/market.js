@@ -329,63 +329,72 @@
 
   function renderViz(data) {
     // ① TOP 15 产品
-    var top15 = data.pool.slice().sort(function (a, b) { return (b.scaleYi || 0) - (a.scaleYi || 0); }).slice(0, 15);
-    var tNames = top15.map(function (r) { return r.name; }).reverse();
-    var tScales = top15.map(function (r) { return +(r.scaleYi || 0).toFixed(2); }).reverse();
-    var topChart = vizInit("mktTopChart");
-    if (topChart) topChart.setOption({
-      tooltip: { trigger: "axis", axisPointer: { type: "shadow" }, valueFormatter: function (v) { return v + " 亿"; } },
-      grid: { left: 8, right: 60, top: 8, bottom: 8, containLabel: true },
-      xAxis: { type: "value", axisLabel: { fontSize: 11, formatter: "{value}亿" }, splitLine: { lineStyle: { color: "#EFEEE9" } } },
-      yAxis: { type: "category", data: tNames, axisLabel: { fontSize: 11, width: 120, overflow: "truncate" } },
-      series: [{
-        type: "bar", data: tScales, barMaxWidth: 14,
-        itemStyle: { borderRadius: [0, 3, 3, 0], color: "#24413B" },
-        label: { show: true, position: "right", fontSize: 10, color: "#6B6862", formatter: "{c}" }
-      }]
-    }, true);
+    try {
+      var top15 = data.pool.slice().sort(function (a, b) { return (b.scaleYi || 0) - (a.scaleYi || 0); }).slice(0, 15);
+      var tNames = top15.map(function (r) { return r.name; }).reverse();
+      var tScales = top15.map(function (r) { return +(r.scaleYi || 0).toFixed(2); }).reverse();
+      var topChart = vizInit("mktTopChart");
+      if (topChart) topChart.setOption({
+        tooltip: { trigger: "axis", axisPointer: { type: "shadow" }, valueFormatter: function (v) { return v + " 亿"; } },
+        grid: { left: 8, right: 60, top: 8, bottom: 8, containLabel: true },
+        xAxis: { type: "value", axisLabel: { fontSize: 11, formatter: "{value}亿" }, splitLine: { lineStyle: { color: "#EFEEE9" } } },
+        yAxis: { type: "category", data: tNames, axisLabel: { fontSize: 11, width: 120, overflow: "truncate" } },
+        series: [{
+          type: "bar", data: tScales, barMaxWidth: 14,
+          itemStyle: { borderRadius: [0, 3, 3, 0], color: "#24413B" },
+          label: { show: true, position: "right", fontSize: 10, color: "#6B6862", formatter: "{c}" }
+        }]
+      }, true);
+    } catch (e) { /* 单图失败不影响其他 */ }
 
     // ② 管理人产品结构树（头部前 8 家，各取 TOP3 产品）
-    var treeData = data.head.slice(0, 8).map(function (mg) {
-      var cIdx = data.head.indexOf(mg) % VIZ_PALETTE.length;
-      var etfs = data.pool.filter(function (r) { return r.owner === mg.m; })
-        .slice().sort(function (a, b) { return (b.scaleYi || 0) - (a.scaleYi || 0); }).slice(0, 3);
-      if (!etfs.length) return null;
-      return {
-        name: mg.m + " · " + fmt(sum(etfs)),
-        itemStyle: { color: VIZ_PALETTE[cIdx] },
-        children: etfs.map(function (r) {
-          return { name: r.name + " · " + fmt(r.scaleYi) + "亿", value: +(r.scaleYi || 0).toFixed(2), itemStyle: { color: VIZ_PALETTE[cIdx] } };
-        })
-      };
-    }).filter(Boolean);
-    var treeChart = vizInit("mktTreeChart");
-    if (treeChart) treeChart.setOption({
-      tooltip: { formatter: function (p) { return p.name; } },
-      series: [{
-        type: "treemap", roam: false, nodeClick: false, breadcrumb: { show: false },
-        itemStyle: { borderColor: "#fff", borderWidth: 2, gapWidth: 2 },
-        label: { show: true, fontSize: 11, color: "#fff", formatter: function (p) { return p.name; } },
-        data: treeData
-      }]
-    }, true);
+    try {
+      var treeData = data.head.slice(0, 8).map(function (mg) {
+        var cIdx = data.head.indexOf(mg) % VIZ_PALETTE.length;
+        var etfs = data.pool.filter(function (r) { return r.owner === mg.m; })
+          .slice().sort(function (a, b) { return (b.scaleYi || 0) - (a.scaleYi || 0); }).slice(0, 3);
+        if (!etfs.length) return null;
+        return {
+          name: mg.m + " · " + fmt(sum(etfs)),
+          itemStyle: { color: VIZ_PALETTE[cIdx] },
+          children: etfs.map(function (r) {
+            return { name: r.name + " · " + fmt(r.scaleYi) + "亿", value: +(r.scaleYi || 0).toFixed(2), itemStyle: { color: VIZ_PALETTE[cIdx] } };
+          })
+        };
+      }).filter(Boolean);
+      var treeChart = vizInit("mktTreeChart");
+      if (treeChart) treeChart.setOption({
+        tooltip: { formatter: "{b}" },
+        series: [{
+          type: "treemap", roam: false, nodeClick: false, breadcrumb: { show: false },
+          itemStyle: { borderColor: "#fff", borderWidth: 2, gapWidth: 2 },
+          label: { show: true, fontSize: 11, color: "#fff", formatter: "{b}" },
+          data: treeData
+        }]
+      }, true);
+    } catch (e) { /* 单图失败不影响其他 */ }
 
     // ③ 管理费率分布
-    var feeMap = {};
-    data.pool.forEach(function (r) {
-      if (r.mgtFee == null) return;
-      var f = +Number(r.mgtFee).toFixed(2);
-      feeMap[f] = (feeMap[f] || 0) + 1;
-    });
-    var feeKeys = Object.keys(feeMap).map(Number).sort(function (a, b) { return a - b; });
-    var feeChart = vizInit("mktFeeChart");
-    if (feeChart) feeChart.setOption({
-      tooltip: { trigger: "axis", axisPointer: { type: "shadow" } },
-      grid: { left: 8, right: 16, top: 10, bottom: 8, containLabel: true },
-      xAxis: { type: "category", data: feeKeys.map(function (f) { return f.toFixed(2) + "%"; }), axisLabel: { fontSize: 11 } },
-      yAxis: { type: "value", name: "产品数", nameTextStyle: { fontSize: 11 }, axisLabel: { fontSize: 11 }, splitLine: { lineStyle: { color: "#EFEEE9" } } },
-      series: [{ type: "bar", data: feeKeys.map(function (f) { return feeMap[f]; }), barMaxWidth: 22, itemStyle: { borderRadius: [3, 3, 0, 0], color: "#93A69A" } }]
-    }, true);
+    try {
+      var feeMap = {};
+      data.pool.forEach(function (r) {
+        if (r.mgtFee == null) return;
+        var f = Math.round(Number(r.mgtFee) * 100) / 100;
+        feeMap[f] = (feeMap[f] || 0) + 1;
+      });
+      var feeKeys = Object.keys(feeMap).map(Number).sort(function (a, b) { return a - b; });
+      var feeChart = vizInit("mktFeeChart");
+      if (feeChart) {
+        var hasFee = feeKeys.length > 0;
+        feeChart.setOption({
+          tooltip: { trigger: "axis", axisPointer: { type: "shadow" } },
+          grid: { left: 8, right: 16, top: 10, bottom: 8, containLabel: true },
+          xAxis: { type: "category", data: hasFee ? feeKeys.map(function (f) { return f.toFixed(2) + "%"; }) : ["无费率数据"], axisLabel: { fontSize: 11 } },
+          yAxis: { type: "value", name: "产品数", nameTextStyle: { fontSize: 11 }, axisLabel: { fontSize: 11 }, splitLine: { lineStyle: { color: "#EFEEE9" } } },
+          series: [{ type: "bar", data: hasFee ? feeKeys.map(function (f) { return feeMap[f]; }) : [], barMaxWidth: 22, itemStyle: { borderRadius: [3, 3, 0, 0], color: "#93A69A" } }]
+        }, true);
+      }
+    } catch (e) { /* 单图失败不影响其他 */ }
   }
 
   function renderTab(typeKey) {
