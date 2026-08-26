@@ -569,7 +569,7 @@ th.idx { width: 48px; text-align: center; }
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(0,30,70,0.55) 0%, rgba(0,40,90,0.45) 100%);
+  background: linear-gradient(180deg, rgba(0,30,70,0.35) 0%, rgba(0,40,90,0.55) 100%);
   pointer-events: none;
 }
 .hero-inner {
