@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ETF 产品线透视 · 头部管理人 ETF 产品结构分析</title>
-<link rel="stylesheet" href="css/style.css?v=20260824b">
+<link rel="stylesheet" href="css/style.css?v=20260826a">
 <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
 </head>
 <body>
@@ -415,6 +415,21 @@
 
         <div class="cmp-section">
           <div class="panel">
+            <div class="panel-head"><h3>该赛道 TOP 产品 · 全市场规模前 15</h3><span class="hint">横向条形，按规模降序</span></div>
+            <div class="chart" id="mktTopChart"></div>
+          </div>
+          <div class="panel">
+            <div class="panel-head"><h3>头部管理人 · 产品结构树</h3><span class="hint">Treemap · 各家 TOP3 产品面积=规模</span></div>
+            <div class="chart" id="mktTreeChart"></div>
+          </div>
+          <div class="panel" style="grid-column:1 / -1">
+            <div class="panel-head"><h3>管理费率分布 · 该赛道全部产品</h3><span class="hint">按费率档位统计产品数</span></div>
+            <div class="chart" id="mktFeeChart"></div>
+          </div>
+        </div>
+
+        <div class="cmp-section">
+          <div class="panel">
             <div class="panel-head"><h3 id="mktAnalysisTitle">③ 易方达生态位与全市场各家特点</h3></div>
             <div class="market-analysis" id="mktAnalysis"></div>
           </div>
@@ -481,9 +496,9 @@
   </main>
 </div>
 
-<script src="js/data.js?v=20260824b"></script>
-<script src="js/compare.js?v=20260824b"></script>
-<script src="js/market.js?v=20260824b"></script>
-<script src="js/app.js?v=20260824b"></script>
+<script src="js/data.js?v=20260826a"></script>
+<script src="js/compare.js?v=20260826a"></script>
+<script src="js/market.js?v=20260826a"></script>
+<script src="js/app.js?v=20260826a"></script>
 </body>
 </html>
