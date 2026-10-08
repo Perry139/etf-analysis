@@ -13731,7 +13731,8 @@
     "pubDt": "",
     "sub": "金融",
     "raw1": "行业",
-    "raw2": "金融"
+    "raw2": "金融",
+    "scaleSrc": ""
    }
   ],
   "汇添富基金": [
@@ -21986,7 +21987,7 @@
     "mgtFee": 0.35,
     "trstFee": 0.09,
     "indexName": "",
-    "scaleYi": 957.98,
+    "scaleYi": 957.97,
     "lstDt": "2013-01-28",
     "pubDt": "2026-09-30",
     "scaleSrc": "westock",
@@ -24770,7 +24771,7 @@
     "mgtFee": 0.3,
     "trstFee": 0.09,
     "indexName": "",
-    "scaleYi": 1074.35,
+    "scaleYi": 1074.4,
     "lstDt": "2013-04-18",
     "pubDt": "2026-09-30",
     "scaleSrc": "westock",
